@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Hall Ticket: {{ booking.slot.exam.course.course_code }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-3">
+    <div class="col-md-8">
+        <a href="{% url 'student_dashboard' %}" class="btn btn-sm btn-outline-secondary mb-3 d-print-none">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+        <button onclick="window.print()" class="btn btn-sm btn-primary mb-3 float-end d-print-none">
+            <i class="fas fa-print"></i> Print Hall Ticket
+        </button>
+        
+        <div class="card dashboard-card border border-2 border-dark" id="hallticket-card">
+            <div class="card-header bg-white border-bottom border-dark text-center py-4">
+                <i class="fas fa-university fa-3x text-dark mb-2"></i>
+                <h4 class="fw-bold mb-1 text-uppercase tracking-wider">Exam Management System</h4>
+                <h6 class="text-muted fw-bold mb-0 text-uppercase">Official Examination Hall Ticket</h6>
+            </div>
+            
+            <div class="card-body p-5">
+                <div class="row border-bottom border-dark pb-4 mb-4">
+                    <div class="col-8">
+                        <table class="table table-borderless table-sm mb-0">
+                            <tr>
+                                <td class="text-muted fw-bold w-25 small">STUDENT NAME</td>
+                                <td class="fw-bold fs-5">{{ student.user.get_full_name|default:student.user.username }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted fw-bold small">ROLL NUMBER</td>
+                                <td class="fw-bold fs-5">{{ student.roll_number }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted fw-bold small">DEPARTMENT</td>
+                                <td class="fw-bold">{{ student.department }} (Sem {{ student.semester }})</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-4 text-end">
+                        <div class="border border-dark d-inline-block p-1" style="width: 120px; height: 140px; background: #f8f9fa;">
+                            <img src="https://ui-avatars.com/api/?name={{ student.user.username }}&background=e9ecef&color=495057&size=110" alt="Student Photo" class="img-fluid w-100 h-100 object-fit-cover">
+                        </div>
+                    </div>
+                </div>
+                
+                <h5 class="fw-bold mb-3 border-start border-primary border-4 ps-2">Examination Details</h5>
+                <div class="bg-light border p-4 rounded-3 mb-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted small fw-bold mb-1">COURSE CODE</p>
+                            <h6 class="fw-bold fs-5">{{ booking.slot.exam.course.course_code }}</h6>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted small fw-bold mb-1">COURSE NAME</p>
+                            <h6 class="fw-bold fs-5">{{ booking.slot.exam.course.name }}</h6>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted small fw-bold mb-1">EXAM DATE</p>
+                            <h6 class="fw-bold fs-5">{{ booking.slot.date|date:"D, d M Y" }}</h6>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted small fw-bold mb-1">TIMING</p>
+                            <h6 class="fw-bold fs-5">{{ booking.slot.start_time|time:"h:i A" }} - {{ booking.slot.end_time|time:"h:i A" }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="text-muted small fw-bold mb-1">ALLOTTED VENUE / ROOM</p>
+                            <h6 class="fw-bold fs-5 mb-0 text-primary">{{ booking.slot.room }}</h6>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-5 pt-4 text-center">
+                    <div class="col-6">
+                        <hr class="w-75 mx-auto border-dark">
+                        <p class="fw-bold small text-muted">STUDENT SIGNATURE</p>
+                    </div>
+                    <div class="col-6">
+                        <hr class="w-75 mx-auto border-dark">
+                        <p class="fw-bold small text-muted">INVIGILATOR SIGNATURE</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-footer bg-dark text-white text-center py-2">
+                <small class="mb-0 text-white-50"><i class="fas fa-exclamation-circle me-1"></i> Please carry this hall ticket and a valid college ID card to the examination hall.</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        #sidebar, .top-navbar {
+            display: none !important;
+        }
+        #hallticket-card, #hallticket-card * {
+            visibility: visible;
+        }
+        #hallticket-card {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            margin: 0;
+            border: 2px solid #000 !important;
+        }
+    }
+</style>
+{% endblock %}

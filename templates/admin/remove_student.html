@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Remove Student{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card dashboard-card border-danger">
+            <div class="card-header bg-danger text-white text-center py-3">
+                <h5 class="mb-0 fw-bold"><i class="fas fa-exclamation-triangle me-2"></i> Remove Student</h5>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-warning">
+                    <strong>Warning:</strong> This action is irreversible. Deleting a student will completely remove their user account, profile, exam bookings, results, and all associated data from the system.
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-muted small">STUDENT ROLL NUMBER</label>
+                        <input type="text" name="roll_number" class="form-control" placeholder="e.g. STU1001" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-muted small">AUTHORIZE (ADMIN PASSWORD)</label>
+                        <input type="password" name="admin_password" class="form-control" placeholder="Enter your admin password to confirm" required>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger fw-bold"><i class="fas fa-trash me-2"></i> Confirm Removal</button>
+                        <a href="{% url 'manage_users' %}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

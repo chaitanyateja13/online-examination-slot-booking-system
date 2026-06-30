@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Mock Payment Gateway{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5">
+        <div class="card dashboard-card p-4">
+            <div class="text-center mb-4">
+                <i class="fas fa-university text-primary fs-2 mb-2"></i>
+                <h5 class="fw-bold">EMS Secure Checkout</h5>
+                <p class="text-muted small">Paying ₹{{ payment.amount }} for Semester {{ payment.semester }}</p>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label small text-muted fw-bold">CARD NUMBER</label>
+                    <input type="text" class="form-control" value="**** **** **** 1234" disabled>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-6">
+                        <label class="form-label small text-muted fw-bold">EXPIRY</label>
+                        <input type="text" class="form-control" value="12/28" disabled>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small text-muted fw-bold">CVV</label>
+                        <input type="password" class="form-control" value="123" disabled>
+                    </div>
+                </div>
+                
+                <hr class="my-4">
+                <p class="text-center text-muted small mb-3">This is a mock gateway. Choose an action to simulate.</p>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" name="action" value="success" class="btn btn-success fw-bold py-2">
+                        Simulate Successful Payment
+                    </button>
+                    <button type="submit" name="action" value="fail" class="btn btn-outline-danger fw-bold py-2">
+                        Simulate Failed Payment
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

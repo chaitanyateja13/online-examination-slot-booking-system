@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block page_title %}Send Notification Alert{% endblock %}
+{% block content %}
+<div class="card dashboard-card w-50 mx-auto">
+    <div class="card-body p-4">
+        <h5 class="fw-bold mb-4">Broadcast Message</h5>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label small text-muted fw-bold">TARGET AUDIENCE</label>
+                <select name="target_role" class="form-select" required>
+                    <option value="ALL">All Users</option>
+                    <option value="STUDENT">All Students</option>
+                    <option value="FACULTY">All Faculty</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label small text-muted fw-bold">MESSAGE TITLE</label>
+                <input type="text" name="title" class="form-control" required>
+            </div>
+            <div class="mb-4">
+                <label class="form-label small text-muted fw-bold">MESSAGE BODY</label>
+                <textarea name="message" class="form-control" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-danger w-100 fw-bold"><i class="fas fa-paper-plane me-2"></i> Send Broadcast</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

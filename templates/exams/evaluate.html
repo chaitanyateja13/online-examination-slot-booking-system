@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Evaluate: {{ assignment.exam.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card dashboard-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h5 class="fw-bold mb-1">{{ assignment.exam.course.name }} - {{ assignment.exam.name }}</h5>
+                    <p class="text-muted small mb-0">Assigned Roll Range: {{ assignment.start_roll_number }} to {{ assignment.end_roll_number }}</p>
+                </div>
+                <a href="{% url 'faculty_dashboard' %}" class="btn btn-sm btn-outline-secondary">Back</a>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="table-responsive">
+                    <table class="table table-custom table-hover">
+                        <thead>
+                            <tr>
+                                <th>Roll Number</th>
+                                <th>Student Name</th>
+                                <th style="width: 150px;">Internal Marks</th>
+                                <th style="width: 150px;">External Marks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in students_data %}
+                            <tr>
+                                <td class="fw-bold align-middle">{{ item.student.roll_number }}</td>
+                                <td class="align-middle">{{ item.student.user.get_full_name|default:item.student.user.username }}</td>
+                                <td>
+                                    <input type="number" step="0.01" class="form-control form-control-sm" name="internal_{{ item.student.id }}" placeholder="0.0" min="0" value="{{ item.result.internal_marks|default:'' }}" required>
+                                </td>
+                                <td>
+                                    <input type="number" step="0.01" class="form-control form-control-sm" name="external_{{ item.student.id }}" placeholder="0.0" min="0" value="{{ item.result.external_marks|default:'' }}" required>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">No students found in this roll range for this course.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-success fw-bold px-4 py-2 shadow-sm">Submit Evaluations</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

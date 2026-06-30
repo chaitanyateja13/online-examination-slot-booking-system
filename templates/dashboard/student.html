@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Stat Cards -->
+    <div class="col-md-3">
+        <div class="dashboard-card border-left-primary">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="text-muted small fw-bold mb-1">CURRENT CGPA</p>
+                    <h3 class="fw-bold mb-0 text-primary">{{ request.user.student_profile.current_cgpa|default:"0.00" }}</h3>
+                </div>
+                <div class="stat-icon bg-primary-light">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="text-muted small fw-bold mb-1">ATTENDANCE</p>
+                    <h3 class="fw-bold mb-0 {% if attendance_percentage >= 75 %}text-success{% else %}text-danger{% endif %}">{{ attendance_percentage }}%</h3>
+                </div>
+                <div class="stat-icon bg-success-light">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="text-muted small fw-bold mb-1">FEE STATUS</p>
+                    <h3 class="fw-bold mb-0 {% if fee_status == 'PAID' %}text-success{% else %}text-warning{% endif %}">{{ fee_status|title }}</h3>
+                </div>
+                <div class="stat-icon bg-warning-light">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <p class="text-muted small fw-bold mb-1">CONFIRMED SLOTS</p>
+                    <h3 class="fw-bold mb-0 text-danger">{{ confirmed_count }}</h3>
+                </div>
+                <div class="stat-icon bg-danger-light">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <!-- Quick Actions & Alerts -->
+    <div class="col-md-8">
+        <div class="card dashboard-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0">My Booked Slots</h5>
+                <a href="{% url 'available_exams' %}" class="btn btn-sm btn-primary">Book New Slot</a>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-custom mb-0">
+                    <thead>
+                        <tr>
+                            <th>Subject</th>
+                            <th>Date & Time</th>
+                            <th>Room</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td class="fw-bold">{{ booking.slot.exam.course.name }}</td>
+                            <td>{{ booking.slot.date|date:"d M Y" }}<br><small class="text-muted">{{ booking.slot.start_time|time:"h:i A" }} - {{ booking.slot.end_time|time:"h:i A" }}</small></td>
+                            <td>{{ booking.slot.room }}</td>
+                            <td>
+                                {% if booking.status == 'CONFIRMED' %}
+                                <span class="badge bg-success">Confirmed</span>
+                                {% else %}
+                                <span class="badge bg-warning text-dark">Waitlisted</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if booking.status == 'CONFIRMED' %}
+                                <a href="{% url 'download_hallticket' booking.id %}" target="_blank" class="btn btn-sm btn-light border">
+                                    <i class="fas fa-download text-primary"></i> Hallticket
+                                </a>
+                                {% else %}
+                                <button class="btn btn-sm btn-light border" disabled><i class="fas fa-download"></i> Hallticket</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5">
+                                <i class="fas fa-calendar-times fa-3x text-muted mb-3 d-block opacity-50"></i>
+                                <h6 class="text-muted fw-bold">No slots booked yet</h6>
+                                <p class="small text-muted mb-4">You have not booked any exam slots. Here are some upcoming exams for your courses:</p>
+                                
+                                {% if available_exams_sample %}
+                                    <div class="row text-start justify-content-center">
+                                    {% for exam in available_exams_sample %}
+                                        <div class="col-md-5 mb-2">
+                                            <div class="border rounded p-3 bg-light shadow-sm">
+                                                <span class="badge bg-primary mb-2">{{ exam.course.course_code }}</span>
+                                                <h6 class="fw-bold mb-1">{{ exam.name }}</h6>
+                                                <a href="{% url 'view_slots' exam.id %}" class="btn btn-sm btn-outline-primary mt-2 w-100">View Slots <i class="fas fa-arrow-right ms-1"></i></a>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    </div>
+                                {% endif %}
+                                <a href="{% url 'available_exams' %}" class="btn btn-primary mt-3 px-4">Browse All Exams</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card dashboard-card">
+            <h5 class="fw-bold mb-4">Recent Notifications</h5>
+            {% for notification in notifications %}
+            <div class="d-flex align-items-start mb-3 {% if not forloop.last %}border-bottom pb-3{% endif %}">
+                <div class="stat-icon bg-info-light me-3 mt-1 text-info" style="width: 35px; height: 35px; font-size: 14px;">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div>
+                    <h6 class="fw-bold mb-1 small">{{ notification.title }}</h6>
+                    <p class="text-muted small mb-0">{{ notification.message }}</p>
+                    <small class="text-muted" style="font-size: 0.7rem;">{{ notification.created_at|timesince }} ago</small>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Mock Notifications if empty -->
+            <div class="d-flex align-items-start mb-3 border-bottom pb-3">
+                <div class="stat-icon bg-info-light me-3 mt-1 text-info" style="width: 35px; height: 35px; font-size: 14px;">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div>
+                    <h6 class="fw-bold mb-1 small">Upcoming Exams</h6>
+                    <p class="text-muted small mb-0">Booking for upcoming semester exams is now open.</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-start pb-3">
+                <div class="stat-icon bg-warning-light me-3 mt-1 text-warning" style="width: 35px; height: 35px; font-size: 14px;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div>
+                    <h6 class="fw-bold mb-1 small">Fee Reminder</h6>
+                    <p class="text-muted small mb-0">Please ensure all fee payments are cleared before booking exams.</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

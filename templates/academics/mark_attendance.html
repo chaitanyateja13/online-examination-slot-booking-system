@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Mark Attendance: {{ schedule.course.course_code }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card dashboard-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h5 class="fw-bold mb-1">{{ schedule.course.name }}</h5>
+                    <p class="text-muted small mb-0"><i class="far fa-clock me-1"></i> {{ schedule.start_time|time:"h:i A" }} - {{ schedule.end_time|time:"h:i A" }} | <i class="fas fa-map-marker-alt ms-2 me-1"></i> {{ schedule.room }}</p>
+                </div>
+                <a href="{% url 'faculty_dashboard' %}" class="btn btn-sm btn-outline-secondary">Back</a>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="row mb-4 bg-light p-3 rounded">
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold text-muted small">SELECT DATE</label>
+                        <input type="date" class="form-control" name="attendance_date" value="{{ today }}" required max="{{ today }}">
+                    </div>
+                    <div class="col-md-8 d-flex align-items-end justify-content-end">
+                        <button type="button" class="btn btn-sm btn-outline-success me-2" onclick="markAll('P')">Mark All Present</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="markAll('A')">Mark All Absent</button>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-custom table-hover">
+                        <thead>
+                            <tr>
+                                <th>Roll Number</th>
+                                <th>Student Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for enrollment in enrolled_students %}
+                            <tr>
+                                <td class="fw-bold text-sm">{{ enrollment.student.roll_number }}</td>
+                                <td>{{ enrollment.student.user.get_full_name|default:enrollment.student.user.username }}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <input type="radio" class="btn-check" name="status_{{ enrollment.student.id }}" id="present_{{ enrollment.student.id }}" value="P" autocomplete="off" checked>
+                                        <label class="btn btn-sm btn-outline-success" for="present_{{ enrollment.student.id }}">Present</label>
+                                      
+                                        <input type="radio" class="btn-check" name="status_{{ enrollment.student.id }}" id="absent_{{ enrollment.student.id }}" value="A" autocomplete="off">
+                                        <label class="btn btn-sm btn-outline-danger" for="absent_{{ enrollment.student.id }}">Absent</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4">No students enrolled in this course.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-primary fw-bold px-4 py-2 shadow-sm">Save Attendance Records</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function markAll(status) {
+        const radios = document.querySelectorAll(`input[type="radio"][value="${status}"]`);
+        radios.forEach(radio => radio.checked = true);
+    }
+</script>
+{% endblock %}

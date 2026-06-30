@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Available Exams for Booking{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <a href="{% url 'student_dashboard' %}" class="btn btn-sm btn-outline-secondary mb-3">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+        <div class="card dashboard-card">
+            <h5 class="fw-bold mb-3">Select an Exam</h5>
+            <p class="text-muted small">Choose an upcoming exam to view and book available slots. You can only book exams for courses you are enrolled in.</p>
+            
+            {% if exams %}
+            <div class="table-responsive mt-3">
+                <table class="table table-custom">
+                    <thead>
+                        <tr>
+                            <th>Course Code</th>
+                            <th>Exam Name</th>
+                            <th>Type</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for exam in exams %}
+                        <tr>
+                            <td class="fw-bold">{{ exam.course.course_code }}</td>
+                            <td>{{ exam.name }}</td>
+                            <td><span class="badge bg-light text-dark border">{{ exam.get_exam_type_display }}</span></td>
+                            <td>
+                                <a href="{% url 'view_slots' exam.id %}" class="btn btn-sm btn-primary">
+                                    View Slots <i class="fas fa-calendar-alt ms-1"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="alert alert-info border-0 shadow-sm">
+                <i class="fas fa-info-circle me-2"></i> No upcoming exams available for your enrolled courses.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

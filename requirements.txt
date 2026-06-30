@@ -1,0 +1,9 @@
+Django>=4.2,<5.0
+djangorestframework
+PyMySQL
+django-environ
+Pillow
+django-cors-headers
+PyJWT
+cryptography
+mysqlclient

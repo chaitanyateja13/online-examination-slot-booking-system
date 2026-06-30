@@ -1,0 +1,92 @@
+exam_system/
+├── .env.example
+├── README.md
+├── academics
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── accounts
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── config
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── create_db.py
+├── exams
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   ├── utils.py
+│   └── views.py
+├── manage.py
+├── notifications
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── payments
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+├── print_tree.py
+├── requirements.txt
+├── run_migrations.bat
+├── seed.bat
+├── seed2.py
+├── seed3.py
+├── seed4.py
+├── seed_50_students.py
+├── seed_data.py
+├── seed_faculty.py
+├── setup.bat
+├── static
+│   └── css
+│       └── style.css
+└── templates
+    ├── academics
+    │   └── mark_attendance.html
+    ├── accounts
+    │   ├── login.html
+    │   └── profile.html
+    ├── admin
+    │   ├── add_student.html
+    │   ├── create_slot.html
+    │   ├── manage_users.html
+    │   └── send_notification.html
+    ├── base.html
+    ├── dashboard
+    │   ├── admin.html
+    │   ├── faculty.html
+    │   └── student.html
+    ├── exams
+    │   ├── available_exams.html
+    │   ├── evaluate.html
+    │   ├── hallticket.html
+    │   ├── slots.html
+    │   └── student_results.html
+    └── payments
+        ├── gateway.html
+        └── initiate.html

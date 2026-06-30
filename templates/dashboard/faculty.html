@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Faculty Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="dashboard-card border-left-primary">
+            <p class="text-muted small fw-bold mb-1">COURSES ASSIGNED</p>
+            <h3 class="fw-bold text-primary">3</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="dashboard-card border-left-success">
+            <p class="text-muted small fw-bold mb-1">EVALUATIONS PENDING</p>
+            <h3 class="fw-bold text-success">45</h3>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="dashboard-card border-left-warning">
+            <p class="text-muted small fw-bold mb-1">UPCOMING CLASSES TODAY</p>
+            <h3 class="fw-bold text-warning">2</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card dashboard-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0">Today's Classes</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                {% for schedule in schedules %}
+                <div class="list-group-item px-0 py-3 d-flex justify-content-between align-items-center border-bottom">
+                    <div>
+                        <h6 class="fw-bold mb-1">{{ schedule.course.name }}</h6>
+                        <small class="text-muted"><i class="far fa-clock me-1"></i> {{ schedule.start_time|time:"h:i A" }} - {{ schedule.end_time|time:"h:i A" }} | Room {{ schedule.room }}</small>
+                    </div>
+                    <a href="{% url 'mark_attendance' schedule.id %}" class="btn btn-sm btn-outline-primary">Mark Attendance</a>
+                </div>
+                {% empty %}
+                <div class="p-3 text-muted text-center">No classes scheduled.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card dashboard-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold mb-0">Exam Evaluation Assignments</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-custom mb-0">
+                    <thead>
+                        <tr>
+                            <th>Exam</th>
+                            <th>Roll Range</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for eval in evaluations %}
+                        <tr>
+                            <td class="fw-bold text-sm">{{ eval.exam.name }}</td>
+                            <td class="text-sm">{{ eval.start_roll_number }} - {{ eval.end_roll_number }}</td>
+                            <td><a href="{% url 'evaluate_exam' eval.id %}" class="btn btn-sm btn-success">Enter Marks</a></td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="text-center text-muted py-3">No evaluations pending.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Add Faculty{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card dashboard-card">
+            <div class="card-body p-4">
+                <h5 class="fw-bold mb-4">Add New Faculty</h5>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small text-muted fw-bold">USERNAME</label>
+                            <input type="text" name="username" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small text-muted fw-bold">EMAIL</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label small text-muted fw-bold">EMPLOYEE ID</label>
+                            <input type="text" name="employee_id" class="form-control" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label small text-muted fw-bold">DEPARTMENT</label>
+                            <input type="text" name="department" class="form-control" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label small text-muted fw-bold">DESIGNATION</label>
+                            <input type="text" name="designation" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-end">
+                        <a href="{% url 'manage_users' %}" class="btn btn-outline-secondary me-2">Cancel</a>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save me-2"></i> Save Faculty</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

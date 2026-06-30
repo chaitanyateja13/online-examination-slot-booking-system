@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block page_title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card dashboard-card">
+            <div class="card-body p-5 text-center">
+                <img src="https://ui-avatars.com/api/?name={{ request.user.username }}&background=4f46e5&color=fff&size=120" alt="User" class="rounded-circle mb-4 shadow">
+                
+                <h3 class="fw-bold mb-1">{{ request.user.get_full_name|default:request.user.username }}</h3>
+                <p class="text-muted mb-4 badge bg-light text-dark border px-3 py-2 fs-6">{{ request.user.get_role_display }}</p>
+                
+                <hr class="mb-4">
+                
+                <div class="row text-start">
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small fw-bold">USERNAME</label>
+                        <p class="mb-0 fw-medium">{{ request.user.username }}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small fw-bold">EMAIL ADDRESS</label>
+                        <p class="mb-0 fw-medium">{{ request.user.email|default:"Not Provided" }}</p>
+                    </div>
+                    
+                    {% if request.user.role == 'STUDENT' and request.user.student_profile %}
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small fw-bold">ROLL NUMBER</label>
+                        <p class="mb-0 fw-medium">{{ request.user.student_profile.roll_number }}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small fw-bold">DEPARTMENT</label>
+                        <p class="mb-0 fw-medium">{{ request.user.student_profile.department }}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small fw-bold">SEMESTER</label>
+                        <p class="mb-0 fw-medium">{{ request.user.student_profile.semester }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    {% if request.user.role == 'FACULTY' and request.user.faculty_profile %}
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small fw-bold">EMPLOYEE ID</label>
+                        <p class="mb-0 fw-medium">{{ request.user.faculty_profile.employee_id }}</p>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="text-muted small fw-bold">DEPARTMENT</label>
+                        <p class="mb-0 fw-medium">{{ request.user.faculty_profile.department }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

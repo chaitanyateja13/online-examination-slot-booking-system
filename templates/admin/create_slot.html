@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block page_title %}Create Exam Slot{% endblock %}
+{% block content %}
+<div class="card dashboard-card w-50 mx-auto">
+    <div class="card-body p-4">
+        <h5 class="fw-bold mb-4">New Exam Slot</h5>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label small text-muted fw-bold">SELECT EXAM</label>
+                <select name="exam_id" class="form-select" required>
+                    {% for exam in exams %}
+                    <option value="{{ exam.id }}">{{ exam.course.course_code }} - {{ exam.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label small text-muted fw-bold">DATE</label>
+                <input type="date" name="date" class="form-control" required>
+            </div>
+            <div class="row mb-3">
+                <div class="col-6">
+                    <label class="form-label small text-muted fw-bold">START TIME</label>
+                    <input type="time" name="start_time" class="form-control" required>
+                </div>
+                <div class="col-6">
+                    <label class="form-label small text-muted fw-bold">END TIME</label>
+                    <input type="time" name="end_time" class="form-control" required>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-6">
+                    <label class="form-label small text-muted fw-bold">ROOM / HALL</label>
+                    <input type="text" name="room" class="form-control" required>
+                </div>
+                <div class="col-6">
+                    <label class="form-label small text-muted fw-bold">CAPACITY</label>
+                    <input type="number" name="capacity" class="form-control" value="50" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success w-100 fw-bold">Create Slot</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,4 +1,21 @@
-#  Online Examination Slot Booking System
+# 🎓 Online Examination Slot Booking System
+
+A Django-based web application for managing online examination slot booking, hall tickets, payments, results, and notifications.
+
+---
+
+##  Quick Overview
+
+-  Student & Faculty Authentication
+-  Slot Booking System
+-  Hall Ticket Generation
+-  Payment System
+-  Results Management
+-  Notifications
+-  Role-based dashboards
+
+
+---#  Online Examination Slot Booking System
 
 A comprehensive web-based **Online Examination Slot Booking System** developed using **Python**, **Django**, and **MySQL**. The system streamlines the examination process by allowing students to book examination slots online while enabling faculty members to manage examinations, hall tickets, payments, notifications, and results efficiently.
 

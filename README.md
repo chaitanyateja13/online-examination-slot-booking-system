@@ -66,6 +66,12 @@ Faculty members can manage examination schedules, monitor student bookings, publ
 
 #  Tech Stack
 
+### Development Tools
+
+- Git
+- GitHub
+- Visual Studio Code
+
 ## Backend
 
 * Python

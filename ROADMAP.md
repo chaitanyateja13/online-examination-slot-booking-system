@@ -16,3 +16,10 @@
 - Docker deployment
 - Cloud hosting
 - Analytics dashboard
+---
+
+## Future Research
+
+- Online proctoring support.
+- AI-assisted examination analytics.
+- Cloud-based deployment.

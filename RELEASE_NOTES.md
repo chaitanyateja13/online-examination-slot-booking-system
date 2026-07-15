@@ -17,3 +17,10 @@
 - Deployment Guide
 - Security Guide
 - Developer Guide
+---
+
+## Repository Maintenance
+
+- Improved documentation consistency.
+- Organized project resources.
+- Added GitHub community files.
